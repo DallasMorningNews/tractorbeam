@@ -27,39 +27,36 @@ def index():
 
 @app.route("/image")
 def generate_image():
-	url = request.args['url']
-	selector = request.args['selector']
-
-	# try to open it
-	driver = webdriver.PhantomJS()
-	try:
-		driver.get(url)
-	except:
-		raise BadURL()
-
-	# try to find the element
-	try:
-		el = driver.find_element_by_css_selector(selector)
-	except:
-		raise BadSelector()
-
-	# find the element's bounds
-	loc = el.location
-	size = el.size
-	x1 = loc['x']
-	x2 = loc['x'] + size['width']
-	y1 = loc['y']
-	y2 = loc['y'] + size['height']
-
-	# generate and crop the screenshot
-	imageb64 = driver.get_screenshot_as_base64()
-	pngraw = base64.decodestring(imageb64)
-	im = Image.open(six.BytesIO(pngraw))
-	im = im.crop((x1,y1,x2,y2))
-	driver.close()
-
-	# return the bytes as a file
-	return send_file(six.BytesIO(im.tobytes()), as_attachment=True, attachment_filename='response.png')
+    url = request.args['url']
+    selector = request.args['selector']
+    # try to open it
+    driver = webdriver.PhantomJS()
+    try:
+    	driver.get(url)
+    except:
+    	raise BadURL()
+    # try to find the element
+    try:
+    	el = driver.find_element_by_css_selector(selector)
+    except:
+    	raise BadSelector()
+    # find the element's bounds
+    loc = el.location
+    size = el.size
+    x1 = loc['x']
+    x2 = loc['x'] + size['width']
+    y1 = loc['y']
+    y2 = loc['y'] + size['height']
+    # generate and crop the screenshot
+    imageb64 = driver.get_screenshot_as_base64()
+    pngraw = base64.decodestring(imageb64)
+    im = Image.open(six.BytesIO(pngraw))
+    im_cropped = im.crop((x1,y1,x2,y2))
+    driver.quit()
+    i = six.StringIO()
+    im_cropped.save(i,"png")
+    i.seek(0)
+    return send_file(i, attachment_filename='response.png', as_attachment=True)
 
 
 

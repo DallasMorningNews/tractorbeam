@@ -2,6 +2,7 @@
 import unittest
 import tractorbeam
 from PIL import Image
+import six
 
 class TractorBeamTestCase(unittest.TestCase):
 
@@ -28,12 +29,12 @@ class TractorBeamTestCase(unittest.TestCase):
 		assert req.status_code == 400
 
     def test_generates_correct_image(self):
-		form = {'selector':'p', 'url': 'http://www.w3.org/History/19921103-hypertext/hypertext/WWW/TheProject.html'}
-		req = self.app.get("/image", query_string=form)
-		result_image = req.get_data()
-		test_image_file =  Image.open("test/test_result_image.png")
-		assert result_image == test_image_file.tobytes()
-		test_image_file.close()
+        form = {'selector':'p', 'url': 'http://www.w3.org/History/19921103-hypertext/hypertext/WWW/TheProject.html'}
+        req = self.app.get("/image", query_string=form)
+        # 		result_image = Image.open(six.StringIO(req.get_data()))
+        result_image = Image.open(six.BytesIO(req.get_data()))
+        test_image_file =  Image.open("test/test_result_image.png")
+        assert result_image.tostring() == test_image_file.tostring()
 
     def test_rejects_invalid_url(self):
 		form = {'selector':'p', 'url': 'file:///www.w3.org/History/19921103-hypertext/hypertext/WWW/TheProject.html'}

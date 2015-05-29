@@ -1,1 +1,36 @@
-test file
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tractor Beam</title>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		.selectorBox, .urlBox {
+			width: 100%;
+			min-width: 200px;
+			max-width: 600px;
+			display: block;
+			margin-bottom: 5px;
+
+
+		}
+
+		article {
+			padding: 5px;
+		}
+
+
+
+	</style>
+</head>
+<body>
+	<article>
+		<h1>Tractor Beam</h1>
+		<h5>Generate images of a specific element on a web page. It chooses the first matching element</h5>
+		<form name="generateImage" action="/image" method="get">
+			<input class="urlBox" name="url" placeholder="Enter a valid http or https URL">
+			<input  class="selectorBox" class="" name="selector" placeholder="Enter a valid CSS selector">
+			<button type="submit">Submit</button>
+		</form>
+	</article>
+</body>
+</html>
