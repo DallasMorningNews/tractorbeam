@@ -2,8 +2,6 @@
 from flask import Flask, request, send_from_directory, send_file, make_response, abort
 from werkzeug.exceptions import HTTPException
 from PIL import Image
-from pilkit.processors import ResizeToFit
-from pprint import pprint
 from selenium import webdriver
 import os, io, base64, six
 
