@@ -47,6 +47,10 @@ class TractorBeamTestCase(unittest.TestCase):
         test_image_file =  Image.open("test/test_result_image.png")
         assert result_image.tostring() == test_image_file.tostring()
 
+    def test_image_has_CORS_asterisk(self):
+        form = {'selector':'p', 'url': 'http://www.w3.org/History/19921103-hypertext/hypertext/WWW/TheProject.html'}
+        req = self.app.get("/image", query_string=form)
+        assert req.headers['Access-Control-Allow-Origin'] == '*'
 
 
 if __name__ == '__main__':
