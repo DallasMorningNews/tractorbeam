@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from flask import Flask, request, send_from_directory, send_file, make_response, abort
+from flask import Flask, request, send_from_directory, send_file, make_response, abort, redirect, url_for
 from werkzeug.exceptions import HTTPException
 from PIL import Image
 from selenium import webdriver
@@ -58,7 +58,9 @@ def generate_image():
     i.seek(0)
     return send_file(i, attachment_filename='response.png', as_attachment=True)
 
-
+@app.route("/image/")
+def reroute_image_with_trailing_slash():
+    return redirect(url_for('generate_image', **request.args))
 
 if __name__ == "__main__":
 	dir = os.path.dirname(__file__)
