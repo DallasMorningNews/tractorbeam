@@ -5,6 +5,17 @@ from PIL import Image
 from selenium import webdriver
 import os, io, base64, six
 
+try:
+    # The typical way to import flask-cors
+    from flask.ext.cors import cross_origin
+except ImportError:
+    # Path hack allows examples to be run without installation.
+    import os
+    parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    os.sys.path.insert(0, parentdir)
+
+    from flask.ext.cors import cross_origin
+
 
 app = Flask(__name__)
 app.debug = False
@@ -25,7 +36,8 @@ class BadSelector(HTTPException):
 def index():
     return send_file('static/index.html')
 
-@app.route("/image")
+@app.route("/image/")
+@cross_origin()
 def generate_image():
     url = request.args['url']
     selector = request.args['selector']
