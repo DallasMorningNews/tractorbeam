@@ -31,7 +31,6 @@ class TractorBeamTestCase(unittest.TestCase):
     def test_generates_correct_image(self):
         form = {'selector':'p', 'url': 'http://www.w3.org/History/19921103-hypertext/hypertext/WWW/TheProject.html'}
         req = self.app.get("/image", query_string=form)
-        # 		result_image = Image.open(six.StringIO(req.get_data()))
         result_image = Image.open(six.BytesIO(req.get_data()))
         test_image_file =  Image.open("test/test_result_image.png")
         assert result_image.tostring() == test_image_file.tostring()
@@ -41,6 +40,12 @@ class TractorBeamTestCase(unittest.TestCase):
 		req = self.app.get("/image", query_string=form)
 		assert req.status_code == 403
 
+    def test_tractorbeam_redirectes_to_correct_image_when_trailing_slash(self):
+        form = {'selector':'p', 'url': 'http://www.w3.org/History/19921103-hypertext/hypertext/WWW/TheProject.html'}
+        req = self.app.get("/image/", query_string=form, follow_redirects=True)
+        result_image = Image.open(six.BytesIO(req.get_data()))
+        test_image_file =  Image.open("test/test_result_image.png")
+        assert result_image.tostring() == test_image_file.tostring()
 
 
 
