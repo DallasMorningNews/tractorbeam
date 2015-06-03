@@ -20,17 +20,17 @@ class TractorBeamTestCase(unittest.TestCase):
 
     def test_accepts_valid_image_requests(self):
     	form = {'url': 'http://www.google.com', 'selector': 'body'}
-    	req = self.app.get("/image", query_string=form)
+    	req = self.app.get("/image/", query_string=form)
     	assert req.status_code == 200
 
     def test_rejects_invalid_valid_image_requests(self):
 		form = {'monkey':'bars', 'happy':'clown'}
-		req = self.app.get("/image", data=form)
+		req = self.app.get("/image/", data=form)
 		assert req.status_code == 400
 
     def test_generates_correct_image(self):
         form = {'selector':'p', 'url': 'http://www.w3.org/History/19921103-hypertext/hypertext/WWW/TheProject.html'}
-        req = self.app.get("/image", query_string=form)
+        req = self.app.get("/image/", query_string=form)
         # 		result_image = Image.open(six.StringIO(req.get_data()))
         result_image = Image.open(six.BytesIO(req.get_data()))
         test_image_file =  Image.open("test/test_result_image.png")
@@ -38,7 +38,7 @@ class TractorBeamTestCase(unittest.TestCase):
 
     def test_rejects_invalid_url(self):
 		form = {'selector':'p', 'url': 'file:///www.w3.org/History/19921103-hypertext/hypertext/WWW/TheProject.html'}
-		req = self.app.get("/image", query_string=form)
+		req = self.app.get("/image/", query_string=form)
 		assert req.status_code == 403
 
 

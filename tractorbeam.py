@@ -4,6 +4,14 @@ from werkzeug.exceptions import HTTPException
 from PIL import Image
 from selenium import webdriver
 import os, io, base64, six
+import logging
+try:
+    from flask.ext.cors import cross_origin
+except ImportError:
+    import os
+    parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    os.sys.path.insert(0, parentdir)
+    from flask.ext.cors import cross_origin
 
 
 app = Flask(__name__)
@@ -25,7 +33,8 @@ class BadSelector(HTTPException):
 def index():
     return send_file('static/index.html')
 
-@app.route("/image")
+@app.route("/image/")
+@cross_origin()
 def generate_image():
     url = request.args['url']
     selector = request.args['selector']
