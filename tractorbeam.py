@@ -56,7 +56,9 @@ def generate_image():
     i = six.StringIO()
     im_cropped.save(i,"png")
     i.seek(0)
-    return send_file(i, attachment_filename='response.png', as_attachment=True)
+    response = send_file(i, attachment_filename='response.png', as_attachment=True)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
 
 @app.route("/image/")
 def reroute_image_with_trailing_slash():
