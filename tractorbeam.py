@@ -3,7 +3,7 @@ from flask import Flask, request, send_from_directory, send_file, make_response,
 from werkzeug.exceptions import HTTPException
 from PIL import Image
 from selenium import webdriver
-import os, io, base64, six
+import os, io, base64, six, time
 
 
 app = Flask(__name__)
@@ -36,6 +36,7 @@ def generate_image():
     except:
     	raise BadURL()
     # try to find the element
+    time.sleep(10)
     try:
     	el = driver.find_element_by_css_selector(selector)
     except:
